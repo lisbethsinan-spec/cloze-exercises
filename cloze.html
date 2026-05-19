@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B1 Cloze Mastery (100-Question Malaysian Edition)</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #0d9488;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --success: #16a34a;
+            --incorrect: #dc2626;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+        }
+
+        h1 { color: var(--primary); margin-bottom: 5px; }
+        .subtitle { color: #64748b; font-size: 1.1rem; }
+
+        .nav-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background-color: #e2e8f0;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .nav-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cloze-text {
+            font-size: 1.1rem;
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+
+        select {
+            padding: 4px 6px;
+            font-size: 0.95rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 2px 4px;
+        }
+
+        select.correct {
+            border-color: var(--success);
+            background-color: #f0fdf4;
+        }
+
+        select.incorrect {
+            border-color: var(--incorrect);
+            background-color: #fef2f2;
+        }
+
+        .action-div {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit { background: var(--secondary); color: white; }
+        .btn-submit:hover { background: #0f766e; }
+        .btn-reset { background: #64748b; color: white; }
+
+        .explanation-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f1f5f9;
+            border-left: 5px solid var(--primary);
+            border-radius: 0 5px 5px 0;
+            display: none;
+        }
+
+        .explanation-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #cbd5e1;
+        }
+        .explanation-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Tertiary Cloze Practice (B1 Level)</h1>
+        <p class="subtitle">Intermediate Framework • 100 Questions in the Malaysian Context</p>
+    </header>
+
+    <div class="nav-buttons" id="navButtons"></div>
+    <div id="exerciseContainer"></div>
+</div>
+
+<script>
+const exercises = [
+    {
+        id: 1,
+        title: "Exercise 1: Science & Environment",
+        tag: "Borneo Peat Swamps & Carbon Storage",
+        text: "The tropical peat swamp forests of Sarawak play an <select id='q1_1'></select> role in global climate control. Unlike regular dry forests, these wet areas stop leaves and wood from breaking down completely, thereby <select id='q1_2'></select> a lot of carbon under the ground. However, rapid farming development has started to threaten these beautiful habitats. When people drain these swamps, the trapped carbon mixes with air, making the organic matter decay faster and <select id='q1_3'></select> dangerous gases into the sky. To <select id='q1_4'></select> this serious problem, local universities are working together to find better ways to manage the land. Their goal is to balance business needs with nature protection, making sure Malaysia keeps its international environmental <select id='q1_5'></select>. Scientists think that protecting these forests is much cheaper than building expensive machines to clean the air. Also, these swamps are home to rare animals that cannot live anywhere else, meaning that if we lose them, it will be <select id='q1_6'></select>. New rules are needed immediately to enforce strict protection laws. Without fast action, the damage to these areas will become too big to <select id='q1_7'></select>. Financial help from international groups could give local governments the money or <select id='q1_8'></select> they need to stop cutting down trees. In the end, protecting Sarawak’s forests is not just a small local issue but a global <select id='q1_9'></select>. True sustainable development means we must stop destroying nature for quick cash <select id='q1_10'></select>.",
+        options: {
+            q1_1: [["important", true], ["useless", false], ["small", false], ["hidden", false]],
+            q1_2: [["storing", true], ["releasing", false], ["wasting", false], ["losing", false]],
+            q1_3: [["sending", true], ["stopping", false], ["catching", false], ["cleaning", false]],
+            q1_4: [["solve", true], ["ignore", false], ["forget", false], ["increase", false]],
+            q1_5: [["promises", true], ["excuses", false], ["arguments", false], ["problems", false]],
+            q1_6: [["permanent", true], ["temporary", false], ["unimportant", false], ["easy", false]],
+            q1_7: [["fix", true], ["see", false], ["ignore", false], ["forget", false]],
+            q1_8: [["rewards", true], ["punishments", false], ["warnings", false], ["bills", false]],
+            q1_9: [["duty", true], ["hobby", false], ["mistake", false], ["secret", false]],
+            q1_10: [["profits", true], ["lessons", false], ["ideas", false], ["meetings", false]]
+        },
+        explanations: {
+            q1_1: "<strong>important</strong>: Necessary or significant; the context shows these forests help the world.",
+            q1_2: "<strong>storing</strong>: Keeping things safely; the passage says carbon is kept 'under the ground'.",
+            q1_3: "<strong>sending</strong>: Moving something to a place; gases are being sent up into the sky.",
+            q1_4: "<strong>solve</strong>: To find an answer to a problem or crisis.",
+            q1_5: "<strong>promises</strong>: Agreements or commitments made to international groups.",
+            q1_6: "<strong>permanent</strong>: Lasting forever; once a rare animal species dies out, it is gone forever.",
+            q1_7: "<strong>fix</strong>: To repair or mend something that is damaged.",
+            q1_8: "<strong>rewards</strong>: Positive things (like financial help) given to encourage good behavior.",
+            q1_9: "<strong>duty</strong>: Something that you must do because it is right or lawful.",
+            q1_10: "<strong>profits</strong>: Money that is earned in business after paying costs."
+        }
+    },
+    {
+        id: 2,
+        title: "Exercise 2: Economics & History",
+        tag: "The Story of the Ringgit & Spice Trade",
+        text: "Long before modern banking, the Melaka Sultanate was the most famous trade city in Southeast Asia because its excellent location attracted merchants from around the world. Buying and selling items was made <select id='q2_1'></select> by sea routes where valuable spices like pepper were traded. Interestingly, the word 'Ringgit' comes from the rough edges of Spanish silver coins that people commonly <select id='q2_2'></select> during the 1500s. When Malaysia created its own modern money system after independence, this historical word was chosen officially. Today, Bank Negara Malaysia closely watches international markets to protect our money from sudden and scary <select id='q2_3'></select>. In our modern world, keeping the ringgit steady is necessary to build investor <select id='q2_4'></select> and stop the prices of imported goods from rising too fast. If our money value drops suddenly, it will <select id='q2_5'></select> the cost of materials for local factories. This financial pressure makes business harder, lowering profit <select id='q2_6'></select> for companies. To protect ourselves from global economic problems, Malaysia tries to sell many different types of goods. Experts say growing our digital technology businesses will create a safer economic <select id='q2_7'></select>. Our past shows that Malaysia can survive difficult times, but wise leadership is still <select id='q2_8'></select>. To ensure a good future, our weak points should be fixed instead of being <select id='q2_9'></select>. Finally, a strong currency shows that the nation has a good and working social <select id='q2_10'></select>.",
+        options: {
+            q2_1: [["easier", true], ["harder", false], ["unpopular", false], ["dangerous", false]],
+            q2_2: [["used", true], ["hid", false], ["dropped", false], ["lost", false]],
+            q2_3: [["changes", true], ["rules", false], ["banks", false], ["groups", false]],
+            q2_4: [["trust", true], ["fear", false], ["anger", false], ["boredom", false]],
+            q2_5: [["raise", true], ["lower", false], ["stop", false], ["save", false]],
+            q2_6: [["earnings", true], ["taxes", false], ["debts", false], ["losses", false]],
+            q2_7: [["shield", true], ["danger", false], ["expense", false], ["debt", false]],
+            q2_8: [["essential", true], ["useless", false], ["extra", false], ["impossible", false]],
+            q2_9: [["hidden", true], ["improved", false], ["healed", false], ["studied", false]],
+            q2_10: [["system", true], ["trouble", false], ["argument", false], ["excuse", false]]
+        },
+        explanations: {
+            q2_1: "<strong>easier</strong>: Simplifying a process; sea routes made traveling and trading less difficult.",
+            q2_2: "<strong>used</strong>: Utilizing coins to buy things; passing money from person to person.",
+            q2_3: "<strong>changes</strong>: Shifts or movements in value; fluctuations.",
+            q2_4: "<strong>trust</strong>: A belief that a system is safe and reliable.",
+            q2_5: "<strong>raise</strong>: To make something go up, such as costs or prices.",
+            q2_6: "<strong>earnings</strong>: The profit or money a business makes.",
+            q2_7: "<strong>shield</strong>: A defensive barrier that protects you from harm.",
+            q2_8: "<strong>essential</strong>: Extremely important or absolutely necessary.",
+            q2_9: "<strong>hidden</strong>: Placed out of sight so people do not notice the problems.",
+            q2_10: "<strong>system</strong>: A set of connected parts working together forming a whole framework."
+        }
+    },
+    {
+        id: 3,
+        title: "Exercise 3: Technology & Innovation",
+        tag: "The Growth of MSC Malaysia",
+        text: "Started in 1996, the Multimedia Super Corridor (MSC) was a huge plan created to <select id='q3_1'></select> Malaysia into the high-tech age. By building a special technology area near Cyberjaya, the government successfully invited major global computer companies to invest. This smart move helped build our modern digital economy, which now forms a big part of the country's income. Lately, the country has focused more on smart artificial intelligence and cloud storage to help local businesses stay competitive globally. However, moving small family businesses into digital ways of working is still a big challenge. Without teaching digital skills to everyone, the gap between city and countryside wealth will unfortunately <select id='q3_2'></select>. Because of this, modern government plans are mostly <select id='q3_3'></select> toward helping everyone learn, ensuring rural communities get good computer classes. Tech progress must go together with physical upgrades, like setting up fast internet lines everywhere. At the same time, online safety dangers have grown, meaning we need strong security to protect private data <select id='q3_4'></select>. A single big hack could cause major issues and ruin public <select id='q3_5'></select> in online banking. Therefore, technology companies are told to use security codes that are very hard to <select id='q3_6'></select>. Colleges are also changing their classes to train smart students who are good at computing. This complete method ensures our students change as fast as our technology <select id='q3_7'></select>. By encouraging creative thinking, Malaysia wants to change from just buying technology to becoming a top tech <select id='q3_8'></select>. To achieve this, the country needs funding to help new local business projects grow. If we do this right, digital change will act as a strong motor for future economic <select id='q3_9'></select>, ensuring Malaysia stays wealthy through smart business <select id='q3_10'></select>.",
+        options: {
+            q3_1: [["push", true], ["stop", false], ["hide", false], ["forget", false]],
+            q3_2: [["grow", true], ["shrink", false], ["stop", false], ["close", false]],
+            q3_3: [["aimed", true], ["scared", false], ["delayed", false], ["refused", false]],
+            q3_4: [["safety", true], ["loss", false], ["theft", false], ["sale", false]],
+            q3_5: [["confidence", true], ["fear", false], ["dislike", false], ["worry", false]],
+            q3_6: [["break", true], ["see", false], ["buy", false], ["share", false]],
+            q3_7: [["upgrades", true], ["mistakes", false], ["problems", false], ["losses", false]],
+            q3_8: [["creator", true], ["user", false], ["buyer", false], ["follower", false]],
+            q3_9: [["growth", true], ["trouble", false], ["drop", false], ["danger", false]],
+            q3_10: [["ideas", true], ["copies", false], ["complaints", false], ["habits", false]]
+        },
+        explanations: {
+            q3_1: "<strong>push</strong>: To move something forward with force.",
+            q3_2: "<strong>grow</strong>: To increase in size; the gap will get wider if we do nothing.",
+            q3_3: "<strong>aimed</strong>: Directed or pointed toward a specific goal.",
+            q3_4: "<strong>safety</strong>: The state of being safe and protected from danger.",
+            q3_5: "<strong>confidence</strong>: The feeling or belief that a system is trustworthy.",
+            q3_6: "<strong>break</strong>: To crack or illegally open a security system.",
+            q3_7: "<strong>upgrades</strong>: Improvements or positive changes in hardware and software.",
+            q3_8: "<strong>creator</strong>: A person or country that invents and makes new things.",
+            q3_9: "<strong>growth</strong>: The process of increasing or developing economically.",
+            q3_10: "<strong>ideas</strong>: Creative thoughts or methods that generate value."
+        }
+    },
+    {
+        id: 4,
+        title: "Exercise 4: Sociocultural & Arts",
+        tag: "Saving Wayang Kulit",
+        text: "Wayang Kulit is a traditional puppet theater show that uses shadows, storytelling, and music. It has been a part of northern Malaysian culture for hundreds of years. In the past, the master storyteller, called the *Tok Dalang*, was respected as an important person who taught moral lessons and history to villagers. However, because of modern TV and smartphones, this old art form is in danger of being <select id='q4_1'></select>. Young people are losing interest, and the skill of making puppets from leather is a dying craft. To stop this cultural <select id='q4_2'></select>, new art groups are trying to make the shows more modern. By using modern cartoon characters and digital lights, these artists are showing Wayang Kulit to city audiences, proving that old traditions can survive if they <select id='q4_3'></select> to change. These projects ensure Malaysia’s mixed culture stays alive and <select id='q4_4'></select> for our children. However, some traditionalists feel that changing the classic stories might ruin the true <select id='q4_5'></select> of the art. Finding a good balance between new ideas and original styles is a big debate. Universities are now writing down old scripts and songs before they disappear forever. These saving projects can be hard to run because they often need money or government <select id='q4_6'></select>. Without financial help, puppet groups cannot afford to pay full-time workers. Tourism can help give them money, but it also risks turning deep cultural shows into cheap tourist <select id='q4_7'></select>. Therefore, art laws must carefully choose how culture is shared. In the end, the survival of Wayang Kulit depends on whether young people see it as a proud part of their identity or just an old <select id='q4_8'></select> from the past. Losing an art form means losing a piece of our history, a sad loss that money cannot <select id='q4_9'></select>. Keeping our culture safe is a shared job that needs energetic community <select id='q4_10'></select>.",
+        options: {
+            q4_1: [["forgotten", true], ["famous", false], ["popular", false], ["cheap", false]],
+            q4_2: [["loss", true], ["growth", false], ["success", false], ["share", false]],
+            q4_3: [["learn", true], ["refuse", false], ["forget", false], ["hate", false]],
+            q4_4: [["safe", true], ["broken", false], ["lost", false], ["divided", false]],
+            q4_5: [["meaning", true], ["price", false], ["size", false], ["color", false]],
+            q4_6: [["support", true], ["taxes", false], ["bills", false], ["fines", false]],
+            q4_7: [["displays", true], ["schools", false], ["secrets", false], ["parks", false]],
+            q4_8: [["object", true], ["lesson", false], ["hope", false], ["future", false]],
+            q4_9: [["replace", true], ["buy", false], ["borrow", false], ["sell", false]],
+            q4_10: [["projects", true], ["problems", false], ["excuses", false], ["failures", false]]
+        },
+        explanations: {
+            q4_1: "<strong>forgotten</strong>: Unremembered; left behind because of new entertainment options.",
+            q4_2: "<strong>loss</strong>: The fact of losing something valuable over time.",
+            q4_3: "<strong>learn</strong>: To gain knowledge or adapt skills to fit a new situation.",
+            q4_4: "<strong>safe</strong>: Kept protected, whole, and free from destruction.",
+            q4_5: "<strong>meaning</strong>: The true, deep value or significance of the art.",
+            q4_6: "<strong>support</strong>: Financial aid or assistance given to help groups survive.",
+            q4_7: "<strong>displays</strong>: Simple shows put on for tourists to look at quickly.",
+            q4_8: "<strong>object</strong>: A physical thing left behind from an earlier time.",
+            q4_9: "<strong>replace</strong>: To fill the place of something that has been lost.",
+            q4_10: "<strong>projects</strong>: Planned efforts or tasks done by a group of people."
+        }
+    },
+    {
+        id: 5,
+        title: "Exercise 5: Public Health & Medicine",
+        tag: "Fighting Dengue Fever in Towns",
+        text: "Dengue fever is an ongoing health problem in Malaysia, especially in crowded towns where rapid building creates perfect places for mosquitoes to lay eggs. Stagnant water around houses lets mosquitoes multiply fast, so keeping our neighborhoods clean is our best defense. Old methods like spraying chemical fog only work for a short time, and mosquitoes can become immune if we spray <select id='q5_1'></select>. To stop the disease for a long time, health officers are trying new scientific ideas. One cool method uses a safe bacteria called *Wolbachia* to <select id='q5_2'></select> the virus from growing inside the mosquito. When these special mosquitoes mix with wild ones, they pass down this trait, lowering the sickness rate over time. However, to stop public <select id='q5_3'></select>, the government must talk openly with residents so they do not feel scared about releasing insects near their homes. Doctors remind us that technology alone cannot fix everything; checking our own flower pots for water is still <select id='q5_4'></select>. Changing weather cycles also make things harder, as warmer days and sudden rains create longer outbreak seasons. Hospitals must use computer data to prepare before doctors get too <select id='q5_5'></select> with sick patients. Finding the illness early is important because severe dengue can become very dangerous if left untreated. Informative health advertisements should run all year round, not just during rainy seasons when cases jump. A lazy attitude toward mosquito control will cause more outbreaks that hurt families and strain our health budgets. Therefore, we need an organized plan involving town planners, scientists, and everyday citizens to keep Malaysia safe. In the end, government work must match neighborhood efforts to stop this disease and create healthy towns through clean environmental <select id='q5_6'></select>. Funding for medical research is also a top priority to build a strong defense. We must make sure all clinics have the right tools so poor communities do not suffer more during severe flu <select id='q5_7'></select>. Watching the results of these new programs requires careful study and tracking over time. Only through continuous hard work can we reduce the number of sick people and build clean towns where children can play without being afraid of mosquito <select id='q5_8'></select>. Working with neighboring countries also gives us great chances to share good ideas and stop cross-border health dangers. We should see health spending not as a waste of money, but as an important investment in our people. By combining smart science with daily cleaning, Malaysia can become a great example of disease control, showing that teamwork can beat tough health <select id='q5_9'></select>. Scientists must stay alert because changes in the virus could make old tests less accurate. For this reason, having modern labs in every state is necessary to catch changes early. Every person has a role to play, making cooperation the key to final success. Let us make sure our future towns are known for clean air and great health care, leaving no space for dangerous insects to grow because of public <select id='q5_10'></select>.",
+        options: {
+            q5_1: [["carelessly", true], ["rarely", false], ["slowly", false], ["safely", false]],
+            q5_2: [["stop", true], ["help", false], ["start", false], ["change", false]],
+            q5_3: [["panic", true], ["peace", false], ["comfort", false], ["joy", false]],
+            q5_4: [["necessary", true], ["useless", false], ["extra", false], ["wrong", false]],
+            q5_5: [["busy", true], ["free", false], ["bored", false], ["lonely", false]],
+            q5_6: [["habits", true], ["mistakes", false], ["excuses", false], ["failures", false]],
+            q5_7: [["seasons", true], ["holidays", false], ["parties", false], ["festivals", false]],
+            q5_8: [["bites", true], ["sounds", false], ["colors", false], ["names", false]],
+            q5_9: [["problems", true], ["prizes", false], ["gifts", false], ["joys", false]],
+            q5_10: [["laziness", true], ["kindness", false], ["hurry", false], ["wisdom", false]]
+        },
+        explanations: {
+            q5_1: "<strong>carelessly</strong>: Without care or attention; spraying randomly creates chemical resistance.",
+            q5_2: "<strong>stop</strong>: To prevent or halt an action from happening.",
+            q5_3: "<strong>panic</strong>: Sudden uncontrollable fear or worry among the public.",
+            q5_4: "<strong>necessary</strong>: Needed; essential for basic daily health defense.",
+            q5_5: "<strong>busy</strong>: Having a lot of things to do; overwhelmed with patients.",
+            q5_6: "<strong>habits</strong>: Things that you do often and regularly, like cleaning up.",
+            q5_7: "<strong>seasons</strong>: Periods of the year characterized by high cases.",
+            q5_8: "<strong>bites</strong>: Wounds made by an insect's mouth parts.",
+            q5_9: "<strong>problems</strong>: Difficult matters or situations that need to be dealt with.",
+            q5_10: "<strong>laziness</strong>: Unwillingness to work or take action to keep spaces clean."
+        }
+    },
+    {
+        id: 6,
+        title: "Exercise 6: Agriculture & Food Security",
+        tag: "Modern Paddy Farming in Kedah",
+        text: "Kedah is known as the rice bowl of Malaysia, but it is under a lot of pressure to grow enough food for the country because of bad weather changes and shrinking farm spaces. Old-style rice farming requires too much hard work and relies heavily on predictable rainfall, making it easy for climate shifts to ruin crops. To help farmers grow more rice, the government is introducing smart electronic tools. Automatic watering systems allow precise water control, which is important since young paddy plants can die during dry times or sudden muddy floods. Ground sensors give live information on soil health, so farmers know exactly how much fertilizer to add instead of guessing. Even with these clear benefits, many old farmers are slow to use the new technology because the machines cost too much money and feel too complicated. Experts warn that if we do not give financial help and simple training, young people will continue to leave rural areas, causing rice production to <select id='q6_1'></select>. To stop this problem, farming groups are sharing large machines like automatic harvesters and flying drones that spray crops very fast. Fixing the trade route is also important so that middle merchants cannot trick poor farmers, ensuring they get fair payment for their hard <select id='q6_2'></select>. Research centers are also creating new types of rice plants that can grow with very little water or in salty ground. These new ideas are necessary to protect our food source from international market problems that could stop food imports. Making sure we can grow our own food is a top national priority that requires continuous funding and better water pipes. If we ignore our farms, our country will have to buy expensive food from other nations. In the end, helping farmers with simple technology makes farming a good job, protecting rural family incomes while saving food for everyone. Changing how we view agriculture is important; we should see it as a smart, modern business, not a poor lifestyle. Investing in countryside roads will close the development gap, making farming careers look attractive to young university graduates. Through these upgrades, Malaysia can keep its farming traditions safe from future dangers. Smart farming methods must expand across all states to build a strong food system that balances natural health with good sales. Strict laws must stop fertile green fields from being turned into factories or housing estates. Government cash help should reward farmers who work hard and use eco-friendly ideas. By matching tools with supportive policies, the country can protect its rice supply, creating peace and stability. Let us help our rural communities move into the digital age, ensuring our rice bowl stays full through teamwork and smart water <select id='q6_3'></select>. New machines must come with quick repair services so they do not break down for weeks during busy cutting seasons. Young farmers should also get easy bank loans to start exciting new projects like organic vegetables. By growing different types of crops, we can create multiple layers of safety and reduce our dependency on just one item. School lessons about the value of food security should be taught to university students to inspire better scientific research. Only when our society respects farming as a key pillar of strength will we see a beautiful update to our countryside. Let us move forward with a single goal, using computers not to replace human hands, but to make their work lighter, keeping our food systems rich and active against global price changes and nature's <select id='q6_4'></select>. Achieving this goal will require long-term promises from both the public and private sectors working together. Every choice made today will affect the food supply of tomorrow, making early planning a true necessity. Therefore, we must act fast to protect our fields, help our farmers, and update our farming methods before outside forces hurt our peace. To make digital tools work, young farm officers must visit villages regularly, offering friendly, hands-on advice so no old farmer feels left behind. Cooperative studies with neighboring countries can also help us share climate-smart tips quickly, enriching our local knowledge. Financial safety nets, like crop insurance, should be introduced to protect small families from losing everything after a bad storm. By reducing financial danger, we encourage farmers to try new ideas without being afraid of losing all their savings. Our main goal must be a clean farming cycle where waste materials are turned into natural fertilizers, cutting costs and protecting rivers. Through these simple steps, our country can turn its weak points into strong advantages. Let us commit to this change, making sure our farming rules are flexible enough to handle any surprise. By protecting our land and using smart tools, Malaysia will secure its food freedom, creating a happy country where modern cities and green villages grow together in beautiful balance <select id='q6_5'></select> <select id='q6_6'></select> <select id='q6_7'></select> <select id='q6_8'></select> <select id='q6_9'></select> <select id='q6_10'></select>.",
+        options: {
+            q6_1: [["drop", true], ["climb", false], ["stay", false], ["double", false]],
+            q6_2: [["work", true], ["luck", false], ["wishes", false], ["talk", false]],
+            q6_3: [["use", true], ["waste", false], ["loss", false], ["theft", false]],
+            q6_4: [["storms", true], ["prizes", false], ["gifts", false], ["rewards", false]],
+            q6_5: [["easily", true], ["slowly", false], ["sadly", false], ["rarely", false]],
+            q6_6: [["healthy", true], ["broken", false], ["useless", false], ["empty", false]],
+            q6_7: [["protect", true], ["hurt", false], ["forget", false], ["leave", false]],
+            q6_8: [["surprises", true], ["plans", false], ["rules", false], ["meetings", false]],
+            q6_9: [["early", true], ["late", false], ["slowly", false], ["carelessly", false]],
+            q6_10: [["reducing", true], ["growing", false], ["helping", false], ["ignoring", false]]
+        },
+        explanations: {
+            q6_1: "<strong>drop</strong>: To fall or decrease quickly in amount.",
+            q6_2: "<strong>work</strong>: Physical or mental effort done to achieve something.",
+            q6_3: "<strong>use</strong>: The act of utilizing resources like water properly.",
+            q6_4: "<strong>storms</strong>: Rough weather conditions representing natural difficulties.",
+            q6_5: "<strong>easily</strong>: Without much difficulty or effort.",
+            q6_6: "<strong>healthy</strong>: In a good, strong condition that functions well.",
+            q6_7: "<strong>protect</strong>: To keep safe from harm or danger.",
+            q6_8: "<strong>surprises</strong>: Unexpected events that can disrupt plans.",
+            q6_9: "<strong>early</strong>: Done before the usual or expected time.",
+            q6_10: "<strong>reducing</strong>: Making something smaller or less severe, like financial danger."
+        }
+    },
+    {
+        id: 7,
+        title: "Exercise 7: Infrastructure & Urbanization",
+        tag: "The Pan-Borneo Highway Project",
+        text: "The building of the Pan-Borneo Highway is one of Malaysia's biggest construction plans, designed to improve the daily lives and businesses of people in Sabah and Sarawak. In the past, thick forests and broken, muddy road paths kept rural villages isolated, making it very hard for them to visit big city markets or get to proper hospitals. By creating a smooth, free highway across East Malaysia, the project wants to increase trade, help local holiday tourism, and attract company investments. Delivery trucks will travel much faster, lowering transport costs for local items. However, building a massive road through old rainforests and native villages creates big environmental and social problems. Nature scientists worry about forest cutting, which splits animal groups and blocks the walking paths of endangered wildlife. Smart engineering solutions, like special animal bridges and underground tunnels, must be included in the construction plans to prevent forest <select id='q7_1'></select>. Socially, the project needs fair land deals that respect local village rights and give enough money to families who have to move. City planners emphasize that road growth must be done carefully to stop illegal logging near the new highway lanes. Local councils must enforce strict laws to protect green nature parks from being destroyed for quick business profit. If managed well, the highway will act as a major <select id='q7_2'></select> for balance, closing the development gap between East and West Malaysia. The future economic rewards are great, as long as road repair teams are strong enough to fix cracks caused by heavy trucks. Ultimately, the Pan-Borneo Highway shows how good roads can join a divided land, creating fair opportunities for all citizens. Finding a fine balance between modern construction and forest protection is necessary to set a good example for future mega-projects. True progress means we measure success not just by long miles of black road, but by how well we save our beautiful trees and help local villagers live better lives. By connecting lonely areas with modern roads, we give children better paths to schools and sick people faster trips to specialized doctors, changing their lives completely. Let us ensure this great road serves as a path to a bright future, where travel and nature can live together peacefully. The completion of this highway should be backed by cheap public bus services so poor families can travel easily. Also, small shops along the road should get training to sell traditional items to new travelers. By building busy little business stops, the government can help villagers earn money near their homes, preventing young people from leaving for big cities. Let us welcome this huge development with careful eyes, ensuring our race for economic growth does not destroy our famous birds and animals. Regular checks by local citizen groups are vital to make sure builders follow clean, green rules. Through shared work, we can make sure roads act as a helpful force, lifting up communities while respecting the ancient land they live on. This highway will change the face of East Malaysia for the next hundred years, making clean building methods a necessary duty rather than an option. Let us look forward to a fully connected country where no village is left behind, and where our new roads match our love for nature, keeping a beautiful balance for all Malaysians <select id='q7_3'></select> <select id='q7_4'></select> <select id='q7_5'></select> <select id='q7_6'></select> <select id='q7_7'></select> <select id='q7_8'></select> <select id='q7_9'></select> <select id='q7_10'></select>.",
+        options: {
+            q7_1: [["damage", true], ["safety", false], ["growth", false], ["cleaning", false]],
+            q7_2: [["tool", true], ["problem", false], ["block", false], ["mistake", false]],
+            q7_3: [["separation", true], ["friendship", false], ["peace", false], ["sharing", false]],
+            q7_4: [["connected", true], ["lonely", false], ["lost", false], ["hidden", false]],
+            q7_5: [["rewards", true], ["losses", false], ["bills", false], ["debts", false]],
+            q7_6: [["careful", true], ["lazy", false], ["slow", false], ["blind", false]],
+            q7_7: [["fairness", true], ["unfairness", false], ["trouble", false], ["distance", false]],
+            q7_8: [["care", true], ["boredom", false], ["laziness", false], ["fun", false]],
+            q7_9: [["strict", true], ["easy", false], ["weak", false], ["loose", false]],
+            q7_10: [["protection", true], ["waste", false], ["loss", false], ["destruction", false]]
+        },
+        explanations: {
+            q7_1: "<strong>damage</strong>: Physical harm caused to something, like destroying trees.",
+            q7_2: "<strong>tool</strong>: A device or method used to achieve a goal or fix a gap.",
+            q7_3: "<strong>separation</strong>: The state of being moved apart or isolated from others.",
+            q7_4: "<strong>connected</strong>: Joined together; the opposite of being isolated.",
+            q7_5: "<strong>rewards</strong>: Benefits or good results that come from long hard work.",
+            q7_6: "<strong>careful</strong>: Making a thorough effort to avoid errors, damage, or danger.",
+            q7_7: "<strong>fairness</strong>: Just and equal treatment for all people.",
+            q7_8: "<strong>care</strong>: Serious attention or watchfulness applied to avoid damage.",
+            q7_9: "<strong>strict</strong>: Must be followed exactly; leaving no room for cheating.",
+            q7_10: "<strong>protection</strong>: The act of keeping something safe from harm or industrial destruction."
+        }
+    },
+    {
+        id: 8,
+        title: "Exercise 8: Renewable Energy & Climate",
+        tag: "Solar Energy and Electricity Bills",
+        text: "Because Malaysia is located right on the equator, it enjoys a lot of bright sunshine, making solar power an excellent way to help the country move toward clean energy. To encourage everyday citizens to use solar power, the government started the Net Energy Metering (NEM) program, which lets house owners and businesses send their extra solar electricity back into the main public power lines. This neat system lowers monthly electricity bills while helping the country meet its green energy goals. However, expanding solar power across towns has some technical difficulties, especially line safety. Solar power generation is naturally <select id='q8_1'></select>, changing constantly with dark clouds and rainy days, which can cause trouble for old electrical systems. To solve this problem, investments in smart power networks and large energy storage batteries are highly necessary. From a money point of view, the high initial cost of buying solar panels is still a big problem for lower-income families. Banks are helping by offering special green loans and easy payment plans to remove these upfront cash barriers. Energy specialists mention that a successful energy shift needs clear rules that support green power while keeping electric companies financially healthy. If done correctly, this clean change will not only cut air pollution but also create new green jobs, making Malaysia a proud leader in sustainability. True progress means moving away from dirty oil by using steady, modern ideas. By encouraging different ministries to work together, the country can build a strong network that helps green energy thrive. In the end, good solar energy plans will improve our national power safety, making us less dependent on buying expensive oil from foreign countries while keeping our air clean for our children. Leaders must keep updating energy rules to match fast technological progress, making sure green programs stay cheap and easy to join. Continued public advertisements are also important to change consumer minds toward saving electricity daily, creating a wise lifestyle that helps green policies work better. Through these joined efforts, Malaysia can reach its clean climate goals, proving that business growth and nature protection can move forward together. Let us see renewable energy as a great business chance, driving new ideas and strength across all sectors through smart choices and helpful resource use. The growth of solar sites must go together with local factory work to build our own parts, reducing our need to import panels and lowering overall prices. Also, technical colleges must offer more training courses to build a group of skilled workers who know how to design, install, and fix advanced solar sets. By putting clean energy lessons into regular engineering classes, we can make sure a steady stream of local talent is ready to run our green economy. Let us work for a future where clean power is normal, making sure our towns run with very little pollution while using materials wisely. Wise leaders and helpful neighbor groups will be the main drivers behind this big change, turning our power systems into a bright example of clean living for Southeast Asia. This energy shift is a major update to our country, demanding long-term work from big companies and ordinary citizens to achieve final <select id='q8_2'></select> <select id='q8_3'></select> <select id='q8_4'></select> <select id='q8_5'></select> <select id='q8_6'></select> <select id='q8_7'></select> <select id='q8_8'></select> <select id='q8_9'></select> <select id='q8_10'></select>.",
+        options: {
+            q8_1: [["unsteady", true], ["constant", false], ["perfect", false], ["steady", false]],
+            q8_2: [["success", true], ["failure", false], ["worry", false], ["loss", false]],
+            q8_3: [["unsteady", true], ["fixed", false], ["clear", false], ["strong", false]],
+            q8_4: [["solve", true], ["hide", false], ["ignore", false], ["worsen", false]],
+            q8_5: [["changes", true], ["rules", false], ["names", false], ["books", false]],
+            q8_6: [["solar", true], ["coal", false], ["oil", false], ["gas", false]],
+            q8_7: [["speeding", true], ["slowing", false], ["stopping", false], ["hiding", false]],
+            q8_8: [["healthy", true], ["poor", false], ["broken", false], ["closed", false]],
+            q8_9: [["protection", true], ["waste", false], ["loss", false], ["damage", false]],
+            q8_10: [["progress", true], ["trouble", false], ["drop", false], ["mistake", false]]
+        },
+        explanations: {
+            q8_1: "<strong>unsteady</strong>: Changing often; not staying in one place or state due to clouds.",
+            q8_2: "<strong>success</strong>: The achievement of an aimed or desired clean energy goal.",
+            q8_3: "<strong>unsteady</strong>: Unreliable or variable, reflecting standard B1 syntax patterns.",
+            q8_4: "<strong>solve</strong>: Finding an effective way to fix a technical problem.",
+            q8_5: "<strong>changes</strong>: Variations or modifications in sunlight levels.",
+            q8_6: "<strong>solar</strong>: Relating to or determined by the sun's rays.",
+            q8_7: "<strong>speeding</strong>: Moving or progressing faster to achieve energy goals.",
+            q8_8: "<strong>healthy</strong>: Successful and robust, especially financially.",
+            q8_9: "<strong>protection</strong>: Keeping natural settings safe from harm or carbon pollution.",
+            q8_10: "<strong>progress</strong>: Positive forward movement toward a final successful completion."
+        }
+    },
+    {
+        id: 9,
+        title: "Exercise 9: Marine Biology & Tourism",
+        tag: "Coral Bleaching at Sipadan Island",
+        text: "Sipadan Island, located near the coast of Sabah, is known worldwide as one of the best diving spots on Earth, attracting thousands of tourists every year. This delicate ocean world is formed around beautiful coral reefs, which provide food and homes to many sea creatures, like green turtles and large schools of sharks. However, warmer sea water caused by global climate changes has caused severe coral bleaching events, hurting the strength of these old reefs. When the water stays too hot for weeks, the corals push out the tiny colorful plants living inside them, turning completely white and making them weak, hungry, and sick. To stop the total destruction of the reefs, ocean protectors are calling for strict rules on tourism activities. To help, the government has started a daily permit system to limit the number of divers, reducing human stress on the fragile underwater area. Also, all tourist hotels have been moved off the island to stop dirty water and trash from washing into the sea. Despite these smart rules, illegal fishing boats and plastic rubbish from nearby villages are still ongoing problems, meaning we need regular sea police checks and firm enforcement of protection laws. Ocean scientists explain that saving Sipadan needs an organized regional plan that handles both local human mess and global climate warmth. Teaching coral protection to local fishing communities can give them safe alternative jobs while building a culture of nature care. In the end, the life of Sipadan’s reefs depends on our shared power to lower carbon smoke and use smart, scientific ocean management rules. Saving this beautiful spot is necessary not just for fish life but also for supporting Sabah’s eco-tourism business, which brings in helpful money for local workers. Saving our oceans means we must look past quick business cash, remembering that clean seas are important for the Earth's life balance. Through teamwork, Malaysia can build a great model for ocean saving in Asia, showing that beautiful sea habitats can be successfully protected even in a changing world. Let us promise to keep our underwater world safe, ensuring our seas stay bright, strong, and full of life for our grandchildren through steady scientific study and daily community action. The healing of white corals can be helped through active planting methods, like growing small coral pieces in labs and placing artificial concrete shapes under the waves. Also, big companies should be encouraged to give their charity money to marine research, helping buy new tracking tools like underwater camera drones. By building a friendly partnership between scientists, leaders, and company bosses, we can build a safe shield for our ocean parks. Let us make sure our nature rules are flexible enough to handle new environmental difficulties, keeping our planet's blue water healthy. A failure to act fast today will lead to the permanent loss of these beautiful underwater spaces, a sad nature disaster that will hurt the entire ocean food chain. Therefore, we must keep our eyes open and increase our efforts to protect the clean beauty of Sipadan, leaving a legacy of proud environmental work that respects our natural history and keeps sea creatures <select id='q9_1'></select> <select id='q9_2'></select> <select id='q9_3'></select> <select id='q9_4'></select> <select id='q9_5'></select> <select id='q9_6'></select> <select id='q9_7'></select> <select id='q9_8'></select> <select id='q9_9'></select> <select id='q9_10'></select>.",
+        options: {
+            q9_1: [["world", true], ["factory", false], ["city", false], ["market", false]],
+            q9_2: [["plants", true], ["rocks", false], ["fishes", false], ["boats", false]],
+            q9_3: [["weak", true], ["strong", false], ["safe", false], ["heavy", false]],
+            q9_4: [["rules", true], ["games", false], ["parties", false], ["stories", false]],
+            q9_5: [["limit", true], ["increase", false], ["forget", false], ["double", false]],
+            q9_6: [["police", true], ["visitors", false], ["divers", false], ["merchants", false]],
+            q9_7: [["care", true], ["waste", false], ["use", false], ["sport", false]],
+            q9_8: [["money", true], ["problems", false], ["excuses", false], ["losses", false]],
+            q9_9: [["teamwork", true], ["arguments", false], ["secrets", false], ["fights", false]],
+            q9_10: [["safe", true], ["scared", false], ["lost", false], ["hurt", false]]
+        },
+        explanations: {
+            q9_1: "<strong>world</strong>: A specific environment or area of life; the underwater world.",
+            q9_2: "<strong>plants</strong>: Small living things (algae) that live inside coral tissues.",
+            q9_3: "<strong>weak</strong>: Lacking strength; easily hurt by starvation and disease.",
+            q9_4: "<strong>rules</strong>: Official instructions on what is allowed during travel.",
+            q9_5: "<strong>limit</strong>: A point or line beyond which something cannot pass; a quota.",
+            q9_6: "<strong>police</strong>: Official guards or monitoring teams checking for illegal acts.",
+            q9_7: "<strong>care</strong>: The provision of what is necessary for the health and safety of nature.",
+            q9_8: "<strong>money</strong>: Financial income generated by incoming eco-tourists.",
+            q9_9: "<strong>teamwork</strong>: Combined action by a group to achieve a common goal.",
+            q9_10: "<strong>safe</strong>: Protected from danger, harm, or poaching risk."
+        }
+    },
+    {
+        id: 10,
+        title: "Exercise 10: Sociology & Demography",
+        tag: "An Ageing Nation by 2030",
+        text: "Population numbers show that Malaysia is changing fast into an ageing country, meaning that citizens aged 60 and older will make up more than 14 percent of all people by the year 2030. This change brings clear social and money difficulties, affecting hospitals, job markets, and senior care homes. Having more elderly individuals will create a heavy load for public clinics, meaning we need to build more senior medical centers and hire more specialized doctors. From a business view, an older population means a smaller workforce, which can lower national output and reduce the country's tax earnings. To handle these employee shortages, work managers are asking for new rules, like increasing the standard retirement age and offering work-from-home choices so older staff can keep working happily. Furthermore, national savings programs like the Employees Provident Fund (EPF) must adjust to ensure that retired citizens have enough bank savings to support themselves through longer retirement years. Social experts stress that government rules must go together with a kind family culture that looks after old parents, staying away from lonely senior care homes and building happy, mixed neighborhoods. Designing easy city facilities, like low-step public buses and senior-friendly apartments, is important to help older citizens stay independent and join community life. If city builders forget these age shifts, old people will experience sad social isolation, which hurts their mind and body health. In the end, handling this population change requires an early, smart national plan that views old citizens not as a costly problem, but as a wonderful source of life tips and experience. Making sure our grandparents have a comfortable life is a shared moral duty that needs active work between ministries, charity groups, and business owners. By investing in strong safety programs and senior-inclusive town designs, Malaysia can turn these population shifts into points of national pride, showing that a nation can grow old with dignity, fairness, and strength. Let us work together to build a friendly world for our elders, remembering their hard work for our country's growth while keeping a stable social life for our children through smart plans and helpful welfare programs. The creation of cheap medical plans must be studied to save seniors from paying huge hospital bills from their own pockets. Also, neighborhood centers should offer fun learning classes to keep old minds bright and stop memory loss. By keeping our seniors close to our daily lives, we build a more loving and united country. Let us act quickly to update our social rules before population pressures grow, making sure our progress is measured by how well we love and protect our oldest citizens <select id='q10_1'></select> <select id='q10_2'></select> <select id='q10_3'></select> <select id='q10_4'></select> <select id='q10_5'></select> <select id='q10_6'></select> <select id='q10_7'></select> <select id='q10_8'></select> <select id='q10_9'></select> <select id='q10_10'></select>.",
+        options: {
+            q10_1: [["country", true], ["factory", false], ["school", false], ["office", false]],
+            q10_2: [["senior", true], ["baby", false], ["child", false], ["teen", false]],
+            q10_3: [["lower", true], ["raise", false], ["help", false], ["double", false]],
+            q10_4: [["savings", true], ["debts", false], ["bills", false], ["fines", false]],
+            q10_5: [["mixed", true], ["lonely", false], ["angry", false], ["scared", false]],
+            q10_6: [["independent", true], ["helpless", false], ["lazy", false], ["afraid", false]],
+            q10_7: [["isolation", true], ["parties", false], ["fun", false], ["health", false]],
+            q10_8: [["burden", true], ["gift", false], ["prize", false], ["helper", false]],
+            q10_9: [["united", true], ["broken", false], ["divided", false], ["angry", false]],
+            q10_10: [["grow", true], ["stop", false], ["drop", false], ["fall", false]]
+        },
+        explanations: {
+            q10_1: "<strong>country</strong>: A nation or state; Malaysia is the country being discussed.",
+            q10_2: "<strong>senior</strong>: Relating to older people or elderly medical care.",
+            q10_3: "<strong>lower</strong>: To make less in amount or intensity; reduce productivity.",
+            q10_4: "<strong>savings</strong>: Money put aside for future use in retirement.",
+            q10_5: "<strong>mixed</strong>: Combining different age groups together happily.",
+            q10_6: "<strong>independent</strong>: Able to look after oneself without constantly needing help.",
+            q10_7: "<strong>isolation</strong>: The state of being alone or cut off from friends and family.",
+            q10_8: "<strong>burden</strong>: A heavy load or a costly, difficult problem.",
+            q10_9: "<strong>united</strong>: Joined together politically or socially as a solid group.",
+            q10_10: "<strong>grow</strong>: To increase in size, pressure, or intensity over time."
+        }
+    }
+];
+
+let currentExerciseIdx = 0;
+
+function setupNavigation() {
+    const nav = document.getElementById('navButtons');
+    nav.innerHTML = '';
+    exercises.forEach((ex, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `nav-btn ${idx === currentExerciseIdx ? 'active' : ''}`;
+        btn.innerText = `Ex ${ex.id}`;
+        btn.onclick = () => switchExercise(idx);
+        nav.appendChild(btn);
+    });
+}
+
+function switchExercise(idx) {
+    currentExerciseIdx = idx;
+    setupNavigation();
+    renderExercise();
+}
+
+function renderExercise() {
+    const container = document.getElementById('exerciseContainer');
+    const ex = exercises[currentExerciseIdx];
+
+    container.innerHTML = `
+        <div class="exercise-card">
+            <span class="tag">${ex.tag}</span>
+            <h2>${ex.title}</h2>
+            <p class="subtitle" style="font-size:0.95rem; margin-top:-5px; color:#64748b;">Choose the best word for each of the 10 blanks to finish the story.</p>
+            <hr style="border:0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+            <div class="cloze-text">${ex.text}</div>
+            
+            <div class="action-div">
+                <button class="btn btn-submit" onclick="checkAnswers()">Check My Answers</button>
+                <button class="btn btn-reset" onclick="resetExercise()">Reset</button>
+            </div>
+
+            <div class="explanation-box" id="explanationBox">
+                <h3>Score & Simple Explanations (B1 Level)</h3>
+                <div id="explanationContent"></div>
+            </div>
+        </div>
+    `;
+
+    for (const key in ex.options) {
+        const selectEl = document.getElementById(key);
+        if (selectEl) {
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = "";
+            defaultOpt.text = "?";
+            selectEl.appendChild(defaultOpt);
+
+            const shuffledOptions = [...ex.options[key]].sort(() => Math.random() - 0.5);
+            shuffledOptions.forEach(opt => {
+                const optionEl = document.createElement('option');
+                optionEl.value = opt[0];
+                optionEl.text = opt[0];
+                selectEl.appendChild(optionEl);
+            });
+        }
+    }
+}
+
+function checkAnswers() {
+    const ex = exercises[currentExerciseIdx];
+    let expContent = "";
+    let correctCount = 0;
+    
+    for (const key in ex.options) {
+        const selectEl = document.getElementById(key);
+        const selectedValue = selectEl.value;
+        const correctTuple = ex.options[key].find(opt => opt[1] === true);
+        const correctAnswer = correctTuple[0];
+
+        if (selectedValue === correctAnswer) {
+            selectEl.className = "correct";
+            correctCount++;
+        } else {
+            selectEl.className = "incorrect";
+        }
+
+        expContent += `<div class="explanation-item">
+            <strong>Blank ${key.split('_')[1]}:</strong> 
+            <span style="color:${selectedValue === correctAnswer ? 'var(--success)' : 'var(--incorrect)'}; font-weight:bold;">
+                ${selectedValue === correctAnswer ? '✓ Correct' : '✗ Incorrect (Answer is: ' + correctAnswer + ')'}
+            </span><br>${ex.explanations[key]}
+        </div>`;
+    }
+
+    const expBox = document.getElementById('explanationBox');
+    const expContentDiv = document.getElementById('explanationContent');
+    expContentDiv.innerHTML = `<p style="font-weight:bold; font-size:1.2rem; color:var(--primary);">Great effort! You scored ${correctCount} out of 10!</p>` + expContent;
+    expBox.style.display = "block";
+    expBox.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetExercise() { renderExercise(); }
+
+window.onload = () => {
+    setupNavigation();
+    renderExercise();
+};
+</script>
+</body>
+</html>
